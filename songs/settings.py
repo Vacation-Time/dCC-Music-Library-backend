@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',  # added via framework
+    'rest_framework',
+    'song_list',
 ]
 
 MIDDLEWARE = [
@@ -112,6 +114,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True  # added via framework
+
+# added date format found on stack overflow-hope it works :)
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 try:
     from songs.local_settings import *

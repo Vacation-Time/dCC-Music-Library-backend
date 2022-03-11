@@ -1,3 +1,4 @@
+from functools import partial
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -23,7 +24,7 @@ def songs_list(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
 def song_detail(request, pk):
     song = get_object_or_404(Songs, pk=pk)
     if request.method == 'GET':
@@ -39,3 +40,12 @@ def song_detail(request, pk):
     elif request.method == 'DELETE':
         song.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    elif request.method == 'PATCH':
+        song.likes += 1  # dot notation to change just 1 attribute
+        serializer = SongsSerializer(
+            song, data=request.data, partial=True)  # should add to likes, needed 'partial=True' for just 1 attribute
+        # checks if request is correct
+        if serializer.is_valid():
+            serializer.save()  # saves new value of request
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

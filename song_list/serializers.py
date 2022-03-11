@@ -7,4 +7,4 @@ class SongsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Songs
         fields = ['id', 'title', 'artist', 'album', 'release_date',
-                  'genre']  # what populates infor in postman
+                  'genre', 'likes']  # what populates infor in postman
